@@ -7,9 +7,15 @@ import useForm from "../hook/useForm";
 const Home = () => {
   const [{ name }, handleInputChange] = useForm({ name: "" });
   const [pokemon, setPokemon] = useState([]);
-  console.log("pokemon :>> ", pokemon.name);
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getPokemonByName(name).then((response) => {
+      setPokemon(response);
+    });
+  };
 
   useEffect(() => {
     getAllPokemon().then((response) => {
@@ -39,7 +45,7 @@ const Home = () => {
     <section className="section">
       <div className="container is-max-widescreen">
         <div className="column is-half is-offset-one-quarter">
-          <NavBar name={name} handleInputChange={handleInputChange} />
+          <NavBar name={name} handleSubmit={handleSubmit} />
           {loading && "Loading"}
 
           {pokemon?.name ? (
